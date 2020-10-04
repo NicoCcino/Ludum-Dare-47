@@ -6,6 +6,7 @@ using TMPro;
 public class spawnOnFirstBoost : MonoBehaviour
 {
     public Transform boosts;
+    public GameObject firstText;
 
     // Start is called before the first frame update
     void Start()
@@ -22,9 +23,12 @@ public class spawnOnFirstBoost : MonoBehaviour
         }
         else
         {
-            gameObject.GetComponent<MeshRenderer>().enabled = true;
-
-            transform.position = boosts.GetChild(0).transform.position - new Vector3(0f, 0, 10f);
+            if (gameObject.GetComponent<MeshRenderer>().enabled == false)
+            {
+                gameObject.GetComponent<MeshRenderer>().enabled = true;
+                transform.position = boosts.GetChild(0).transform.position + new Vector3(1f, 0, 0f);
+                firstText.GetComponent<MeshRenderer>().enabled = false;
+            }
         }
     }
 }

@@ -6,6 +6,8 @@ public class boostScript : MonoBehaviour
 {
     public string boostType;
     public LoopPoints loopScript;
+    public GameObject textToHide;
+    public GameObject textToShow;
 
     public float enlargeAmount = 10f;
     public float reduceSpeedAmount = 10f;
@@ -55,16 +57,24 @@ public class boostScript : MonoBehaviour
     private void BoostEnlarge()
     {
         loopScript.enlargeBonus += enlargeAmount;
+        AudioSource BoostAudio = GameObject.Find("Audio").GetComponent<audioSources>().sources[3];
+        BoostAudio.Play();
     }
 
     private void BoostReduceSpeed()
     {
         loopScript.shrinkSpeed -= reduceSpeedAmount;
+        AudioSource BoostAudio = GameObject.Find("Audio").GetComponent<audioSources>().sources[3];
+        BoostAudio.Play();
     }
 
     private void BoostInvisibility()
     {
         invisibilityUI.SetActive(true);
+        textToHide.SetActive(false);
+        textToShow.SetActive(true);
+        AudioSource BoostAudio = GameObject.Find("Audio").GetComponent<audioSources>().sources[3];
+        BoostAudio.Play();
         Destroy(this.gameObject);
     }
 }

@@ -6,11 +6,18 @@ public class PlayerCollisions : MonoBehaviour
 {
     public float forceSpeed = 10f;
     public gameManager gm;
+    public AudioSource explosionAudio;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        if (gm == null){
+            gm = GameObject.Find("GameManager").GetComponent<gameManager>();
+        }
+        if (explosionAudio == null)
+        {
+            explosionAudio = GameObject.Find("Audio").GetComponent<audioSources>().sources[0];
+        }
     }
 
     // Update is called once per frame
@@ -21,7 +28,7 @@ public class PlayerCollisions : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Wall"))
+        if (other.gameObject.layer == LayerMask.NameToLayer("Asteroid"))
         {
             //Debug.Log("Impact!");
             // Vector3 impactPoint = wall.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position);
@@ -33,10 +40,24 @@ public class PlayerCollisions : MonoBehaviour
             //this.GetComponent<Rigidbody>().AddForce(forceSpeed * direction,ForceMode.Impulse);
             //this.gameObject.GetComponent<Rigidbody>().AddExplosionForce(forceSpeed, impactPoint, 10f);
             Debug.Log("GAME OVER");
+            // Play sound
+            explosionAudio.Play();
+
+            gm.restartLevel();
+        }
+        if (other.gameObject.layer == LayerMask.NameToLayer("Wall"))
+        {
+            Debug.Log("GAME OVER");
+            // Play sound
+            AudioSource zapAudio = GameObject.Find("Audio").GetComponent<audioSources>().sources[5];
+            zapAudio.Play();
+
             gm.restartLevel();
         }
         if (other.gameObject.layer == LayerMask.NameToLayer("Exit"))
         {
+            AudioSource warpAudio = GameObject.Find("Audio").GetComponent<audioSources>().sources[4];
+            warpAudio.Play();
             gm.nextLevel();
         }
 

@@ -6,7 +6,7 @@ public class asteroids : MonoBehaviour
 {
 
     public float spawnDistance = 50f;
-    public GameObject asteroidPrefab;
+    public GameObject[] asteroidPrefabs;
     public Transform asteroidsTransform;
     public Transform playerTransform;
     public float speed;
@@ -40,6 +40,10 @@ public class asteroids : MonoBehaviour
 
     void SpawnAsteroid()
     {
+        int randIndex;
+        randIndex = Mathf.FloorToInt(Random.Range(0, asteroidPrefabs.Length));
+        GameObject asteroidPrefab = asteroidPrefabs[randIndex];
+
         float x = 0;
         float z = 0;
 
@@ -67,5 +71,8 @@ public class asteroids : MonoBehaviour
 
         GameObject asteroid = Instantiate(asteroidPrefab, new Vector3(x, 0, z), Quaternion.identity, asteroidsTransform);
         asteroid.GetComponent<Rigidbody>().AddForce((playerTransform.position - asteroid.transform.position) * speed);
+        asteroid.GetComponent<Rigidbody>().AddTorque((playerTransform.position - asteroid.transform.position) * speed /2);
+
+        Destroy(asteroid, 15f);
     }
 }

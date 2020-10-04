@@ -13,6 +13,11 @@ public class invisibilityScript : MonoBehaviour
     public Color emptyColor;
     public GameObject player;
     public bool invisibilityActive = false;
+    public GameObject pressSpaceText;
+
+    public GameObject ufoPart1;
+    public GameObject ufoPart2;
+
 
     // Start is called before the first frame update
     void Awake()
@@ -40,11 +45,15 @@ public class invisibilityScript : MonoBehaviour
         {
             // change color
             invisibilityBarRectTransform.GetComponent<Image>().color = fullColor;
+            // show press space
+            pressSpaceText.SetActive(true);
         }
         else
         {
             // change color
             invisibilityBarRectTransform.GetComponent<Image>().color = emptyColor;
+            // hide press space
+            pressSpaceText.SetActive(false);
         }
         if (invisibilityAmount == 0)
         {
@@ -71,18 +80,26 @@ public class invisibilityScript : MonoBehaviour
         if (!invisibilityActive)
         {
             invisibilityActive = true;
-            Color color = player.GetComponent<Renderer>().material.color;
-            color.a = 0.1f; //  transparent
-            player.GetComponent<Renderer>().material.color = color;
+            //Color color = player.GetComponent<Renderer>().material.color;
+            //color.a = 0.1f; //  transparent
+            ufoPart1.SetActive(false);
+            ufoPart2.SetActive(false);
+            //player.GetComponent<Renderer>().material.color = color;
             player.GetComponent<SphereCollider>().enabled = false;
+            AudioSource invisibilityAudio = GameObject.Find("Audio").GetComponent<audioSources>().sources[1];
+            invisibilityAudio.Play();
         }
         else
         {
             invisibilityActive = false;
-            Color color = player.GetComponent<Renderer>().material.color;
-            color.a = 1f; //  opaque
-            player.GetComponent<Renderer>().material.color = color;
+            //Color color = player.GetComponent<Renderer>().material.color;
+            //color.a = 1f; //  opaque
+            //player.GetComponent<Renderer>().material.color = color;
             player.GetComponent<SphereCollider>().enabled = true;
+            ufoPart1.SetActive(true);
+            ufoPart2.SetActive(true);
+            AudioSource invisibilityAudio = GameObject.Find("Audio").GetComponent<audioSources>().sources[1];
+            invisibilityAudio.Play();
         }
         
     }
